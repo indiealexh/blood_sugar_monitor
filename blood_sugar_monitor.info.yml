@@ -1,0 +1,4 @@
+name: Blood Sugar Monitor Module
+type: module
+description: 'Provides a means for a user to record their blood sugar levels once per hour.'
+core: 8.x

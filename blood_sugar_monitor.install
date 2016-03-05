@@ -1,0 +1,17 @@
+<?php
+
+/**
+ * @file
+ * Installation functions for blood sugar monitor module.
+ */
+
+use Drupal\user\RoleInterface;
+
+/**
+ * Implements hook_install().
+ */
+function blood_sugar_monitor_install() {
+    user_role_change_permissions(RoleInterface::AUTHENTICATED_ID, array(
+        'store blood sugar monitoring data' => TRUE,
+    ));
+}
