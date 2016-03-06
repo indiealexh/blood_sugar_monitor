@@ -1,0 +1,4 @@
+store bsm data:
+  title: 'store blood sugar monitoring data'
+veiw bsm data:
+  title: 'view blood sugar monitoring data'

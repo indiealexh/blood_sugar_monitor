@@ -1,4 +1,4 @@
-blood_sugar_monitor.content:
+blood_sugar_monitor.table:
   path: '/bsm'
   defaults:
     _controller: '\Drupal\blood_sugar_monitor\Controller\BloodSugarMonitorController::content'

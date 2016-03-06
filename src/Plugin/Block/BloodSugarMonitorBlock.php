@@ -10,7 +10,9 @@
 
 namespace Drupal\blood_sugar_monitor\Plugin\Block;
 
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Session\AccountInterface;
 
 class BloodSugarMonitorBlock extends BlockBase{
 
@@ -28,8 +30,23 @@ class BloodSugarMonitorBlock extends BlockBase{
    * @see \Drupal\block\BlockViewBuilder
    */
   public function build() {
-    return array(
-      '#markup' => $this->t('Blood sugar monitor'),
-    );
+
+    $render = array();
+
+    $render['#markup'] = t('Please enter your most recent blood sugar value:');
+    $form = \Drupal::formBuilder()->getForm('Drupal\blood_sugar_monitor\Form\BloodSugarMonitorForm');
+    $render[] = $form;
+
+    return $render;
   }
+
+  /**
+   * @param \Drupal\Core\Session\AccountInterface $account
+   * @return bool
+   */
+  public function blockAccess(AccountInterface $account) {
+    if($account->hasPermission('store bsm data')) return AccessResult::allowed();
+    else return AccessResult::forbidden();
+  }
+
 }
