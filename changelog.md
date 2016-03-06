@@ -1,3 +1,9 @@
+# 0.0.6
+- Removed unnecessary commented out code
+- Added database installation schema
+- Added ability to record BS values
+- Added BS Value Validation
+
 # 0.0.5
 - Added form Ajax
 - Added success Ajax response

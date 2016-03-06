@@ -16,3 +16,30 @@ function blood_sugar_monitor_install() {
       'view bsm data' => TRUE,
     ));
 }
+
+/**
+ * Implements hook_schema()
+ */
+function blood_sugar_monitor_schema() {
+  $schema['blood_sugar_monitor'] = array(
+    'fields' => array(
+      'id' => array('type' => 'serial', 'unsigned' => TRUE, 'not null' => TRUE),
+      'uid' => array('type' => 'int', 'not null' => TRUE, 'default' => 0),
+      'value'   => array('type' => 'float', 'not null' => TRUE, 'default' => 0),
+      'created'   => array('type' => 'int', 'not null' => TRUE, 'default' => 0),
+    ),
+    'indexes' => array(
+      'uid' => array('uid'),
+      'created' => array('created'),
+    ),
+    // For documentation purposes only; foreign keys are not created in the database.
+    'foreign keys' => array(
+      'node_author' => array(
+        'table' => 'users',
+        'columns' => array('uid' => 'uid'),
+      ),
+    ),
+    'primary key' => array('id'),
+  );
+  return $schema;
+}
