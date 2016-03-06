@@ -12,6 +12,9 @@ use Drupal\user\RoleInterface;
  */
 function blood_sugar_monitor_install() {
     user_role_change_permissions(RoleInterface::AUTHENTICATED_ID, array(
-        'store blood sugar monitoring data' => TRUE,
+      'store bsm data' => TRUE,
+    ));
+    user_role_change_permissions(RoleInterface::AUTHENTICATED_ID, array(
+      'view bsm data' => TRUE,
     ));
 }

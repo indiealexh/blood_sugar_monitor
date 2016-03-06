@@ -1,0 +1,7 @@
+blood_sugar_monitor.content:
+  path: '/bsm'
+  defaults:
+    _controller: '\Drupal\blood_sugar_monitor\Controller\BloodSugarMonitorController::content'
+    _title: 'Blood sugar monitor'
+  requirements:
+    _permission: 'view bsm data'

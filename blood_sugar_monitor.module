@@ -7,6 +7,9 @@ use Drupal\Core\Routing\RouteMatchInterface;
 
 /**
  * Implements hook_help().
+ * @param $route_name
+ * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
+ * @return \Drupal\Core\StringTranslation\TranslatableMarkup
  */
 function blood_sugar_monitor_help($route_name, RouteMatchInterface $route_match)
 {

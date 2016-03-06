@@ -1,0 +1,6 @@
+blood_sugar_monitor.content:
+  title: 'Blood sugar monitor'
+  description: 'Link to Blood sugar monitoring tables'
+  route_name: blood_sugar_monitor.content
+  menu_name: main
+  weight: 100

@@ -1,9 +1,11 @@
 <?php
 /**
- * Created by IntelliJ IDEA.
- * User: Alexander
- * Date: 06/03/2016
- * Time: 15:54
+ * Provides a 'Hello' Block
+ *
+ * @Block(
+ *   id = "blood_sugar_monitor_block",
+ *   admin_label = @Translation("Blood Sugar Monitor block"),
+ * )
  */
 
 namespace Drupal\blood_sugar_monitor\Plugin\Block;
