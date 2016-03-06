@@ -1,0 +1,13 @@
+{
+  "name": "drupal/blood_sugar_monitor",
+  "description": "Provides a means for a user to record their blood sugar levels once per hour.",
+  "minimum-stability": "dev",
+  "license": "MIT",
+  "type": "drupal-module",
+  "authors": [
+    {
+      "name": "Alexander Haslam",
+      "email": "champhaggy@gmail.com"
+    }
+  ]
+}
