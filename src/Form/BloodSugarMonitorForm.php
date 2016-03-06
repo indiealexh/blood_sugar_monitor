@@ -6,6 +6,11 @@
 
 namespace Drupal\blood_sugar_monitor\Form;
 
+use Drupal\Core\Ajax\AjaxResponse;
+use Drupal\Core\Ajax\ChangedCommand;
+use Drupal\Core\Ajax\CssCommand;
+use Drupal\Core\Ajax\HtmlCommand;
+use Drupal\Core\Ajax\InvokeCommand;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 
@@ -33,22 +38,65 @@ class BloodSugarMonitorForm extends FormBase{
    *   The form structure.
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-
     $form['blood_sugar'] = array(
       '#type' => 'number',
       '#title' => t('blood sugar level'),
+      '#description' => 'Please enter a blood sugar value',
       '#default_value' => 5.00,
       '#min' => 1.00,
       '#max' => 10.00,
       '#step' => 0.01,
       '#required' => TRUE,
+      '#suffix' => t('<div id="search-suggest"></div>'),
     );
-    $form['submit'] = array(
+    $form['submit_blood_sugar'] = array(
       '#type' => 'submit',
-      '#value' => t('Submit'),
+      '#value' => t('Add blood sugar value'),
+      '#ajax' => array(
+        'callback' => array($this, 'ajaxCallback'),
+        'event' => 'click',
+        'progress' => array(
+          'type' => 'throbber',
+          'message' => 'Submitting',
+        ),
+        //'wrapper' => 'search-suggest',
+      ),
     );
 
     return $form;
+  }
+
+  protected function checkHourPassed() {
+    return true;
+  }
+
+  protected function successResponse() {
+    $response = new AjaxResponse();
+    $response->addCommand(new HtmlCommand('#bsm-form',t('Thank you, please come back in an hour to submit your next blood sugar value')));
+    $response->addCommand(new CssCommand('#bsm-form',[
+      'background' => '#f3faef no-repeat 10px 17px',
+      'padding' => '15px 20px 15px 35px',
+      'border' => '1px solid #c9e1bd',
+      'border-radius' => '2px',
+      'box-shadow' => '-8px 0 0 #77b259',
+      'background-image' => 'url(/core/misc/icons/73b355/check.svg)'
+    ]));
+    return $response;
+  }
+
+  public function ajaxCallback(array &$form, FormStateInterface $form_state) {
+
+    try {
+      if(!$this->checkHourPassed()) throw new \Exception('Error');
+      return $this->successResponse();
+    } catch (\Exception $e) {
+      $response = new AjaxResponse();
+      $response->addCommand(new CssCommand('#edit-blood-sugar',['border-color' => 'red']));
+      $response->addCommand(new CssCommand('#edit-blood-sugar--description',['color' => 'red']));
+      $response->addCommand(new HtmlCommand('#edit-blood-sugar--description',t('Invalid')));
+      return $response;
+    }
+
   }
 
   /**
@@ -60,6 +108,6 @@ class BloodSugarMonitorForm extends FormBase{
    *   The current state of the form.
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    drupal_set_message($this->t('Thank you.<br>You will be able to submit another result in an hours time'));
+    //ToDo: Decide what to do with this
   }
 }

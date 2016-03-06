@@ -32,8 +32,6 @@ class BloodSugarMonitorBlock extends BlockBase{
   public function build() {
 
     $render = array();
-
-    $render['#markup'] = t('Please enter your most recent blood sugar value:');
     $form = \Drupal::formBuilder()->getForm('Drupal\blood_sugar_monitor\Form\BloodSugarMonitorForm');
     $render[] = $form;
 

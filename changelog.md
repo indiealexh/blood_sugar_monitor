@@ -1,3 +1,7 @@
+# 0.0.5
+- Added form Ajax
+- Added success Ajax response
+
 # 0.0.4
 - Added form
 - Added number field to form with validation for range of 1.00 to 10.00
