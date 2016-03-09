@@ -1,3 +1,6 @@
+# 0.1.0
+- Updated readme and some documentation
+
 # 0.0.7
 - Added table with BSM list for user.
 - Added time checking for submission.

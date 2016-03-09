@@ -18,7 +18,7 @@ class BloodSugarMonitorController extends ControllerBase{
     $listings = Database::getConnection()
       ->select('blood_sugar_monitor','bsm')
       ->fields('bsm')
-      ->range(0,10)
+      ->range(0,72)
       ->condition('bsm.uid',$userid)
       ->orderBy('bsm.created', 'DESC')
       ->execute();
