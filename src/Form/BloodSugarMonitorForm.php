@@ -67,7 +67,35 @@ class BloodSugarMonitorForm extends FormBase{
   }
 
   protected function checkHourPassed() {
-    return true;
+
+    $userid = \Drupal::currentUser()->id();
+
+    $count = Database::getConnection()
+      ->select('blood_sugar_monitor','bsm')
+      ->fields('bsm')
+      ->range(0,1)
+      ->condition('bsm.uid',$userid)
+      ->orderBy('bsm.created', 'DESC')
+      ->countQuery()->execute()->fetchField();
+
+    if((int)$count == (int)0) return true;
+
+    $listings = Database::getConnection()
+      ->select('blood_sugar_monitor','bsm')
+      ->fields('bsm')
+      ->range(0,1)
+      ->condition('bsm.uid',$userid)
+      ->orderBy('bsm.created', 'DESC')
+      ->execute();
+
+    foreach($listings as $listing) {
+      $tpHour = (float)$listing->created + (float)3600;
+      if((float)time() > (float)$tpHour) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   protected function validateBSValue($value) {
@@ -94,13 +122,33 @@ class BloodSugarMonitorForm extends FormBase{
     return $response;
   }
 
+  protected function timeErrorResponse() {
+    $response = new AjaxResponse();
+    $user = \Drupal\user\Entity\User::load(\Drupal::currentUser()->id());
+    $response->addCommand(new HtmlCommand('#bsm-form',t('Sorry '.$user->get('name')->value.', you already submitted a value within the past hour')));
+    $response->addCommand(new CssCommand('#bsm-form',[
+      'background' => '#fcf4f2 no-repeat 10px 17px',
+      'padding' => '15px 20px 15px 35px',
+      'border' => '1px solid #f9c9bf',
+      'border-radius' => '2px',
+      'box-shadow' => '-8px 0 0 #e62600',
+      'background-image' => 'url(/core/misc/icons/e32700/error.svg)'
+    ]));
+    return $response;
+  }
+
   public function ajaxCallback(array &$form, FormStateInterface $form_state) {
     $user = \Drupal\user\Entity\User::load(\Drupal::currentUser()->id());
 
-    try {
-      if(!$this->checkHourPassed()) throw new \Exception('Error');
-      if(!$this->validateBSValue($form_state->getValue('blood_sugar'))) throw new \Exception('Error');
+    if(!$this->checkHourPassed()) {
+      return $this->timeErrorResponse();
+    }
 
+    if(!$this->validateBSValue($form_state->getValue('blood_sugar'))) {
+      throw new \Exception('Error');
+    }
+
+    try {
       $fields = array(
         'uid' => \Drupal::currentUser()->id(),
         'value' => $form_state->getValue('blood_sugar'),

@@ -1,3 +1,7 @@
+# 0.0.7
+- Added table with BSM list for user.
+- Added time checking for submission.
+
 # 0.0.6
 - Removed unnecessary commented out code
 - Added database installation schema
